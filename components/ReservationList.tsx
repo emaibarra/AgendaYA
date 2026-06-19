@@ -2,49 +2,29 @@
 
 import { useState } from 'react';
 import ReservationCard from './ReservationCard';
-
-const initialReservations = [
-  {
-    id: 1,
-    patient: 'Juan Perez',
-    date: '2026-06-20',
-    confirmed: false
-  },
-  {
-    id: 2,
-    patient: 'Maria Gomez',
-    date: '2026-06-21',
-    confirmed: false
-  }
-];
+import { reservations as store, type Reservation } from '@/data/reservations';
 
 export default function ReservationList() {
-  const [reservations, setReservations] =
-    useState(initialReservations);
+  // Tomamos una copia del store al montar: incluye las reservas creadas
+  // desde el booking público durante esta sesión.
+  const [reservations, setReservations] = useState<Reservation[]>(() => [...store]);
 
-  const confirmReservation = (
-    reservationId: number
-  ) => {
+  const confirmReservation = (reservationId: number) => {
     setReservations((prev) =>
       prev.map((reservation) =>
-        reservation.id === reservationId
-          ? {
-              ...reservation,
-              confirmed: true
-            }
-          : reservation
+        reservation.id === reservationId ? { ...reservation, confirmed: true } : reservation
       )
     );
+
+    // Reflejamos el cambio también en el store compartido.
+    const target = store.find((r) => r.id === reservationId);
+    if (target) target.confirmed = true;
   };
 
   return (
     <div className="space-y-4">
       {reservations.map((reservation) => (
-        <ReservationCard
-          key={reservation.id}
-          {...reservation}
-          onConfirm={confirmReservation}
-        />
+        <ReservationCard key={reservation.id} {...reservation} onConfirm={confirmReservation} />
       ))}
     </div>
   );
