@@ -11,7 +11,6 @@ on:
 
 jobs:
   test-and-build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -28,7 +27,7 @@ jobs:
 
       - name: Run tests
         run: npm test
-        
+
       - name: Check formatting
         run: npm run format:check
 
