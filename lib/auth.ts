@@ -1,4 +1,6 @@
-const users = [
+import { RegisterDto, User } from '@/types/user';
+
+const users: User[] = [
   {
     email: 'bruno@test.com',
     password: '123456',
@@ -20,7 +22,7 @@ export function login(email: string, password: string) {
   return user;
 }
 
-export function register(data: any) {
+export function register(data: RegisterDto) {
   const { email, password, name, confirmPassword } = data;
 
   if (!email || !password || !name || !confirmPassword) {
@@ -35,6 +37,12 @@ export function register(data: any) {
     throw new Error('Las contraseñas no coinciden');
   }
 
-  users.push({ email, password, name });
+  const newUser: User = {
+    name,
+    email,
+    password,
+  };
+
+  users.push(newUser);
   return users[users.length - 1];
 }
