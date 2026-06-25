@@ -3,10 +3,8 @@ import { users } from '@/data/users';
 
 describe('Tests de Autenticación (lib/auth.ts)', () => {
   beforeEach(() => {
-    // Limpia el array
     users.length = 0;
 
-    // Agrega el usuario inicial
     users.push(
       {
         id: 1,
@@ -20,44 +18,37 @@ describe('Tests de Autenticación (lib/auth.ts)', () => {
         email: 'noconfirmado@test.com',
         password: '123456',
         name: 'Invitado',
-        isConfirmed: false, // Usuario que el test va a intentar loguear
+        isConfirmed: false,
       }
     );
   });
 
-  // Test 1: Verificar el error cuando la contraseña es incorrecta
   test('Lanza error en el login si la contraseña es incorrecta', () => {
-  test('Lanza error en el login si la contraseña es incorrecta', () => {
-    // Usamos el email que ya existe en tu array mockeado ('bruno@test.com')
     expect(() => login('bruno@test.com', 'clave-equivocada')).toThrow('Contraseña incorrecta');
   });
 
-  // Test 2: Verificar la validación de contraseñas al registrarse
-  test('Lanza error en el registro si las contraseñas no coinciden', () => {
   test('Lanza error en el registro si las contraseñas no coinciden', () => {
     const nuevoUsuario = {
       email: 'nuevo@test.com',
       password: 'password123',
       confirmPassword: 'passwordDistinta',
-      name: 'Usuario Prueba',,
+      name: 'Usuario Prueba',
     };
 
     expect(() => register(nuevoUsuario)).toThrow('Las contraseñas no coinciden');
   });
 
-  // Test 3 : Verifico que no existan mails duplicados.
   test('Lanza error en el registro si el email ya está registrado', () => {
     const usuarioExistente = {
       email: 'bruno@test.com',
-      password: '123456',
-      confirmPassword: '123456',
+      password: '12345678',
+      confirmPassword: '12345678',
       name: 'Otro Usuario',
     };
 
     expect(() => register(usuarioExistente)).toThrow('El correo ya está registrado');
   });
 
-  // Test 4 : Verifico que el enlace de confirmacion expiro.
   test('Rechaza la confirmación cuando el enlace está vencido', () => {
     expect(() =>
       confirmAccount({
@@ -67,42 +58,33 @@ describe('Tests de Autenticación (lib/auth.ts)', () => {
     ).toThrow('El enlace de confirmación ha expirado');
   });
 
-  // Test 5: Verifico que existe una cuenta antes de resetear su contrasenia
   test('Lanza error al recuperar contraseña con un email no registrado', () => {
     expect(() => recoverPassword('inexistente@test.com')).toThrow(
       'No existe una cuenta asociada a ese correo electrónico'
     );
   });
+
   test('Lanza error si el email está vacío', () => {
     expect(() => recoverPassword('')).toThrow('El correo electrónico es obligatorio');
   });
 
-  // Test: Rechazo por formato de email inválido al registrarse (US-M01-01)
   test('Lanza error en el registro si el formato del email es inválido', () => {
     const usuarioEmailInvalido = {
-      email: 'usuario_sin_arroba.com', // Formato incorrecto intencional
+      email: 'usuario_sin_arroba.com',
       password: 'password123',
       confirmPassword: 'password123',
       name: 'Prueba Email',
     };
 
-    // Esperamos que la función register detecte el formato y lance una excepción
     expect(() => register(usuarioEmailInvalido)).toThrow('Formato de email inválido');
   });
 
-  // Test: Bloqueo de inicio de sesión por cuenta no confirmada (US-M01-03)
   test('Lanza error en el login si la cuenta no ha sido confirmada', () => {
-    // Para que este test funcione, deberás agregar un usuario mock en lib/auth.ts
-    // que tenga una propiedad confirmada en false (ej: isConfirmed: false)
-    // Asumimos que existe un usuario 'noconfirmado@test.com' en tu mock de usuarios
-
     expect(() => login('noconfirmado@test.com', '123456')).toThrow(
       'Debes confirmar tu cuenta antes de ingresar'
     );
   });
-});
 
-  // Test 3: Error si la contraseña tiene menos de 8 caracteres.
   test('Lanza error en el registro si la contraseña tiene menos de 8 caracteres', () => {
     const usuarioConClaveCorta = {
       email: 'clavecorta@test.com',
@@ -116,13 +98,19 @@ describe('Tests de Autenticación (lib/auth.ts)', () => {
     );
   });
 
-  // Test 4: Bloqueo de la cuenta por 15 minutos tras superar los 5 intentos fallidos.
   describe('Bloqueo de cuenta tras intentos fallidos', () => {
     const email = 'bloqueo@test.com';
     const password = 'ClaveSegura1';
 
-    beforeAll(() => {
-      register({ email, password, confirmPassword: password, name: 'Usuario Bloqueo' });
+    beforeEach(() => {
+      users.push({
+        id: 3,
+        email,
+        password,
+        name: 'Usuario Bloqueo',
+        isConfirmed: true,
+        failedAttempts: 0,
+      });
     });
 
     afterEach(() => {
@@ -130,15 +118,14 @@ describe('Tests de Autenticación (lib/auth.ts)', () => {
     });
 
     test('Bloquea la cuenta luego del 5to intento fallido consecutivo', () => {
-      // 4 intentos fallidos: todavía debe rechazar por contraseña incorrecta.
       for (let i = 0; i < 4; i++) {
         expect(() => login(email, 'claveIncorrecta')).toThrow('Contraseña incorrecta');
       }
-      // 5to intento fallido: dispara el bloqueo.
+
       expect(() => login(email, 'claveIncorrecta')).toThrow(
         'Cuenta bloqueada por intentos fallidos. Intentá nuevamente en 15 minutos.'
       );
-      // Aunque ahora se use la contraseña correcta, la cuenta sigue bloqueada.
+
       expect(() => login(email, password)).toThrow(
         'Cuenta bloqueada por intentos fallidos. Intentá nuevamente en 15 minutos.'
       );
@@ -146,11 +133,18 @@ describe('Tests de Autenticación (lib/auth.ts)', () => {
 
     test('Desbloquea la cuenta una vez transcurridos los 15 minutos', () => {
       jest.useFakeTimers();
+      jest.setSystemTime(new Date('2026-01-01T00:00:00.000Z'));
 
-      // Avanzamos el reloj 15 minutos + 1 segundo desde el último intento fallido.
+      for (let i = 0; i < 5; i++) {
+        try {
+          login(email, 'claveIncorrecta');
+        } catch {
+          // La cuenta se bloquea en el quinto intento.
+        }
+      }
+
       jest.advanceTimersByTime(15 * 60 * 1000 + 1000);
 
-      // Pasado el bloqueo, el login con la contraseña correcta debe funcionar.
       const user = login(email, password);
       expect(user.email).toBe(email);
     });

@@ -7,10 +7,35 @@ describe('Tests de Utilidades de Reserva (lib/booking.ts)', () => {
     // Fecha de prueba: 5 de Mayo de 2024
     const fechaPrueba = new Date(2024, 4, 5);
 
-    const fechaPrueba = new Date(2024, 4, 5);
     const resultado = toDateKey(fechaPrueba);
 
-    expect(resultado).toBe("2024-05-05");
+    expect(resultado).toBe('2024-05-05');
   });
 
+  // Test 4: Fallo al intentar reservar un horario que quedó fuera de
+  // disponibilidad o que ya pasó.
+  test('createBooking lanza error al intentar reservar un horario que ya pasó', () => {
+    // Usamos "ayer" en lugar de una fecha fija para que el test no dependa de cuándo se ejecute
+    const ayer = new Date();
+    ayer.setDate(ayer.getDate() - 1);
+
+    expect(() =>
+      createBooking({
+        eventTypeId: 'consulta-inicial',
+        date: ayer,
+        time: '10:00',
+        name: 'Paciente de Prueba',
+        email: 'paciente@test.com',
+      })
+    ).toThrow('Este horario ya no está disponible.');
+  });
+
+  // Test 4: Verifica que los dias no laborales no esten disponibles.
+  test('Bloquea los días no laborables', () => {
+    expect(isDayDisabled(nextSunday())).toBe(true);
+  });
+
+  test('Permite seleccionar un día laborable', () => {
+    expect(isDayDisabled(nextMonday())).toBe(false);
+  });
 });

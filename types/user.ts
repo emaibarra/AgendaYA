@@ -11,6 +11,8 @@ export interface User {
   email: string;
   password: string;
   isConfirmed: boolean;
+  lockedUntil?: Date | null;
+  failedAttempts?: number;
 }
 
 export interface ConfirmAccountDto {
