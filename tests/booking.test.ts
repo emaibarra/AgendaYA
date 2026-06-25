@@ -1,4 +1,4 @@
-import { toDateKey } from "@/lib/booking";
+import { toDateKey, createBooking } from "@/lib/booking";
 
 describe("Tests de Utilidades de Reserva (lib/booking.ts)", () => {
 
@@ -12,5 +12,24 @@ describe("Tests de Utilidades de Reserva (lib/booking.ts)", () => {
     
     expect(resultado).toBe("2024-05-05");
   });
+
+    // Test 4: Fallo al intentar reservar un horario que quedó fuera de
+  // disponibilidad o que ya pasó.
+  test("createBooking lanza error al intentar reservar un horario que ya pasó", () => {
+    // Usamos "ayer" en lugar de una fecha fija para que el test no dependa de cuándo se ejecute 
+    const ayer = new Date();
+    ayer.setDate(ayer.getDate() - 1);
+
+    expect(() =>
+      createBooking({
+        eventTypeId: 'consulta-inicial',
+        date: ayer,
+        time: '10:00',
+        name: 'Paciente de Prueba',
+        email: 'paciente@test.com',
+      })
+    ).toThrow('Este horario ya no está disponible para reservar.');
+  });
+
 
 });

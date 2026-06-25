@@ -92,6 +92,19 @@ export function createBooking(input: {
 }): Booking {
   const dateKey = toDateKey(input.date);
 
+  // Regla del sistema: no se puede reservar un horario que ya pasó o que no
+  // respeta la antelación mínima configurada (availability.minNoticeHours).
+  const [hh, mm] = input.time.split(':').map(Number);
+  const slotDateTime = new Date(input.date);
+  slotDateTime.setHours(hh, mm, 0, 0);
+
+  const now = new Date();
+  const minBookable = new Date(now.getTime() + availability.minNoticeHours * 60 * 60 * 1000);
+
+  if (slotDateTime < minBookable) {
+    throw new Error('Este horario ya no está disponible.');
+  }
+
   // Regla del sistema: un horario reservado no puede reservarse otra vez.
   if (takenSlots.has(slotKey(dateKey, input.time))) {
     throw new Error('Este horario ya fue reservado. Por favor elegí otro.');
