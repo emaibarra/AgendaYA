@@ -120,7 +120,7 @@ export function createBooking(input: {
     createdAt: new Date().toISOString(),
   };
   console.log('Creando reserva:', booking);
-  
+
   // Actualizamos el estado en memoria para bloquear el horario y mostrarlo en el admin.
   takenSlots.add(slotKey(dateKey, input.time));
   sessionBookings.push(booking);

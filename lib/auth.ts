@@ -1,4 +1,6 @@
-const users = [
+import { RegisterDto, User } from '@/types/user';
+
+const users: User[] = [
   {
     email: 'bruno@test.com',
     password: '123456',
@@ -32,7 +34,7 @@ export function login(email: string, password: string) {
   return user;
 }
 
-export function register(data: any) {
+export function register(data: RegisterDto) {
   const { email, password, name, confirmPassword } = data;
 
   if (!email || !password || !name || !confirmPassword) {
