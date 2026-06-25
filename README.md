@@ -34,3 +34,38 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```mermaid
+graph TD
+%% DISPARADORES
+subgraph Disparadores
+A[🚀 Push a la rama 'main']
+B[🔀 Pull Request hacia 'main']
+end
+%% PIPELINE
+subgraph Etapas del Pipeline de CI
+    C[📥 1. Checkout del código]
+    D[⚙️ 2. Setup Node.js]
+    E[📦 3. Instalar dependencias <br> 'npm install']
+    F[🧪 4. Ejecutar Tests <br> 'npm test']
+end
+
+%% RESULTADOS
+subgraph Resultados Esperados
+    G[✅ Éxito <br> Se habilita el Merge a main]
+    H[❌ Fallo <br> Se bloquea la integración y se notifica]
+end
+
+%% CONEXIONES
+A --> C
+B --> C
+C --> D
+D --> E
+E --> F
+
+F -->|Si los tests pasan| G
+F -->|Si algún test falla| H
+
+%% Estilos (Opcional, para darle color)
+style G fill:#d4edda,stroke:#28a745,color:#155724
+style H fill:#f8d7da,stroke:#dc3545,color:#721c24
+```
