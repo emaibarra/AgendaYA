@@ -1,18 +1,5 @@
-export type Reservation = {
-  id: number;
-  patient: string;
-  email: string;
-  phone?: string;
-  note?: string;
-  service: string;
-  date: string; // yyyy-mm-dd
-  time: string; // HH:mm
-  confirmed: boolean;
-};
+import type { Reservation } from '@/types/booking';
 
-// Store en memoria de reservas. Las reservas creadas desde el booking público
-// se agregan acá con addReservation y aparecen luego en el panel del admin.
-// (Es un mock: al recargar la página vuelve al estado inicial.)
 export const reservations: Reservation[] = [
   {
     id: 1,
@@ -42,7 +29,6 @@ export function addReservation(data: Omit<Reservation, 'id' | 'confirmed'>): Res
     confirmed: false,
     ...data,
   };
-  console.log('RESERVATIONS:', reservations);
   reservations.push(reservation);
   return reservation;
 }

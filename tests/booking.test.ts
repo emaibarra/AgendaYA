@@ -1,10 +1,9 @@
 import { toDateKey, isDayDisabled, nextSunday, nextMonday, createBooking } from '@/lib/booking';
 
 describe('Tests de Utilidades de Reserva (lib/booking.ts)', () => {
-  // Test 3: Verificar que el formateo de la fecha sea correcto (el que ya tenías)
+  // Convierte una fecha al formato interno yyyy-mm-dd sin perder ceros a la izquierda.
   test("toDateKey formatea la fecha en 'YYYY-MM-DD' agregando ceros a la izquierda", () => {
-    // En JavaScript, el mes comienza en 0 (por lo tanto, 4 es Mayo).
-    // Fecha de prueba: 5 de Mayo de 2024
+    // En JavaScript, el mes comienza en 0, por eso 4 representa mayo.
     const fechaPrueba = new Date(2024, 4, 5);
 
     const resultado = toDateKey(fechaPrueba);
@@ -12,10 +11,9 @@ describe('Tests de Utilidades de Reserva (lib/booking.ts)', () => {
     expect(resultado).toBe('2024-05-05');
   });
 
-  // Test 4: Fallo al intentar reservar un horario que quedó fuera de
-  // disponibilidad o que ya pasó.
+  // Rechaza reservas para un horario que ya quedó en el pasado.
   test('createBooking lanza error al intentar reservar un horario que ya pasó', () => {
-    // Usamos "ayer" en lugar de una fecha fija para que el test no dependa de cuándo se ejecute
+    // Usamos ayer para que el caso sea estable y no dependa de la fecha actual.
     const ayer = new Date();
     ayer.setDate(ayer.getDate() - 1);
 
@@ -30,11 +28,12 @@ describe('Tests de Utilidades de Reserva (lib/booking.ts)', () => {
     ).toThrow('Este horario ya no está disponible.');
   });
 
-  // Test 4: Verifica que los dias no laborales no esten disponibles.
+  // Bloquea automáticamente los domingos.
   test('Bloquea los días no laborables', () => {
     expect(isDayDisabled(nextSunday())).toBe(true);
   });
 
+  // Permite seleccionar un día laboral válido.
   test('Permite seleccionar un día laborable', () => {
     expect(isDayDisabled(nextMonday())).toBe(false);
   });
