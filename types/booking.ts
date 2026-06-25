@@ -10,6 +10,18 @@ export type Booking = {
   createdAt: string;
 };
 
+export type Reservation = {
+  id: number;
+  patient: string;
+  email: string;
+  phone?: string;
+  note?: string;
+  service?: string;
+  date: string;
+  time: string;
+  confirmed: boolean;
+};
+
 export type Slot = {
   time: string;
   available: boolean;

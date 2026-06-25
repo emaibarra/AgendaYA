@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import ReservationCard from './ReservationCard';
-import { reservations as store, type Reservation } from '@/data/reservations';
+import { reservations as store } from '@/data/reservations';
+import type { Reservation } from '@/types/booking';
 
 export default function ReservationList() {
   // Tomamos una copia del store al montar: incluye las reservas creadas

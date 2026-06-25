@@ -1,9 +1,4 @@
-const reservations = [
-  {
-    id: 1,
-    confirmed: false,
-  },
-];
+import { reservations } from '@/data/reservations';
 
 export function confirmReservation(id: number) {
   const reservation = reservations.find((r) => r.id === id);
