@@ -1,8 +1,10 @@
 import { RegisterDto, ConfirmAccountDto } from '@/types/user';
 import { users } from '@/data/users';
 
+const MAX_INTENTOS_FALLIDOS = 5;
+const DURACION_BLOQUEO_MS = 15 * 60 * 1000;
+
 export function login(email: string, password: string) {
-  console.log('usuarios', users);
   const user = users.find((u) => u.email === email);
 
   if (!user) {
@@ -14,10 +16,31 @@ export function login(email: string, password: string) {
     throw new Error('Debes confirmar tu cuenta antes de ingresar');
   }
 
+  const now = Date.now();
+  const lockedUntil = user.lockedUntil?.getTime();
+
+  if (lockedUntil && now < lockedUntil) {
+    throw new Error('Cuenta bloqueada por intentos fallidos. Intentá nuevamente en 15 minutos.');
+  }
+
+  if (lockedUntil && now >= lockedUntil) {
+    user.lockedUntil = undefined;
+    user.failedAttempts = 0;
+  }
+
   if (user.password !== password) {
+    user.failedAttempts = (user.failedAttempts ?? 0) + 1;
+
+    if (user.failedAttempts >= MAX_INTENTOS_FALLIDOS) {
+      user.lockedUntil = new Date(now + DURACION_BLOQUEO_MS);
+      throw new Error('Cuenta bloqueada por intentos fallidos. Intentá nuevamente en 15 minutos.');
+    }
+
     throw new Error('Contraseña incorrecta');
   }
 
+  // Login correcto -> se reinicia el contador de intentos fallidos.
+  user.failedAttempts = 0;
   return user;
 }
 
@@ -36,6 +59,10 @@ export function register(data: RegisterDto) {
 
   if (users.find((u) => u.email === email)) {
     throw new Error('El correo ya está registrado');
+  }
+
+  if (password.length < 8) {
+    throw new Error('La contraseña debe tener al menos 8 caracteres');
   }
 
   if (password !== confirmPassword) {
