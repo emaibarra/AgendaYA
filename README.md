@@ -44,10 +44,13 @@ B[🔀 Pull Request hacia 'main']
 end
 %% PIPELINE
 subgraph Etapas del Pipeline de CI
-    C[📥 1. Checkout del código]
+    C[📥 1. Checkout del repositorio]
     D[⚙️ 2. Setup Node.js]
-    E[📦 3. Instalar dependencias <br> 'npm install']
-    F[🧪 4. Ejecutar Tests <br> 'npm test']
+    E[📦 3. Instala dependencias <br> 'npm install']
+    I[⚡️ 4. Ejecuta el Eslint 'npn run lint']
+    F[🧪 5. Ejecuta Tests <br> 'npm test']
+    J[🎨 6. Ejecuta el formateador de texto 'npm run format']
+    K[🔒️ 7. Ejecuta el build del proyecto 'npm run build']
 end
 
 %% RESULTADOS
@@ -61,10 +64,14 @@ A --> C
 B --> C
 C --> D
 D --> E
-E --> F
+E --> I
+I --> F
+F --> J
+J --> K
 
-F -->|Si los tests pasan| G
-F -->|Si algún test falla| H
+
+K -->|Si se ejecutan todos los comandos del pipeline de forma exitosa| G
+K -->|Si alguna instancia del pipeline falla| H
 
 %% Estilos (Opcional, para darle color)
 style G fill:#d4edda,stroke:#28a745,color:#155724
