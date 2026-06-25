@@ -1,22 +1,6 @@
 import { availability, existingBookings, eventTypes } from '@/data/booking';
 import { addReservation } from '@/data/reservations';
-
-export type Booking = {
-  id: string;
-  eventTypeId: string;
-  date: string; // yyyy-mm-dd
-  time: string; // HH:mm
-  name: string;
-  email: string;
-  phone?: string;
-  note?: string;
-  createdAt: string;
-};
-
-export type Slot = {
-  time: string;
-  available: boolean;
-};
+import { Booking, Slot } from '@/types/booking';
 
 // Clave local yyyy-mm-dd (sin desfase de zona horaria, a diferencia de toISOString).
 export function toDateKey(date: Date): string {
@@ -90,6 +74,17 @@ export function createBooking(input: {
   phone?: string;
   note?: string;
 }): Booking {
+  // 1. Validar campos obligatorios (NUEVO)
+  if (!input.name.trim() || !input.email.trim()) {
+    throw new Error('El nombre y el email son obligatorios');
+  }
+
+  // 2. Validar formato de email (NUEVO)
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(input.email.trim())) {
+    throw new Error('Formato de email inválido');
+  }
+
   const dateKey = toDateKey(input.date);
 
   // Regla del sistema: no se puede reservar un horario que ya pasó o que no
@@ -105,7 +100,20 @@ export function createBooking(input: {
     throw new Error('Este horario ya no está disponible.');
   }
 
-  // Regla del sistema: un horario reservado no puede reservarse otra vez.
+  // Regla del sistema: no se puede reservar un horario que ya pasó o que no
+  // respeta la antelación mínima configurada (availability.minNoticeHours).
+  const [hh, mm] = input.time.split(':').map(Number);
+  const slotDateTime = new Date(input.date);
+  slotDateTime.setHours(hh, mm, 0, 0);
+
+  const now = new Date();
+  const minBookable = new Date(now.getTime() + availability.minNoticeHours * 60 * 60 * 1000);
+
+  if (slotDateTime < minBookable) {
+    throw new Error('Este horario ya no está disponible.');
+  }
+
+  // Regla del sistema: un horario reservado no puede reservarse otra vez. (Ya lo tenías)
   if (takenSlots.has(slotKey(dateKey, input.time))) {
     throw new Error('Este horario ya fue reservado. Por favor elegí otro.');
   }
@@ -122,6 +130,7 @@ export function createBooking(input: {
     createdAt: new Date().toISOString(),
   };
   console.log('Creando reserva:', booking);
+
 
   // Actualizamos el estado en memoria para bloquear el horario y mostrarlo en el admin.
   takenSlots.add(slotKey(dateKey, input.time));
@@ -149,4 +158,27 @@ export function createBooking(input: {
 
 export function getSessionBookings(): Booking[] {
   return [...sessionBookings];
+}
+
+// Funcion para poder testear dias no habilitados.
+export function nextSunday() {
+  const date = new Date();
+  date.setHours(0, 0, 0, 0);
+
+  while (date.getDay() !== 0) {
+    date.setDate(date.getDate() + 1);
+  }
+
+  return date;
+}
+// Funcion para poder testear el primer lunes.
+export function nextMonday() {
+  const date = new Date();
+  date.setHours(0, 0, 0, 0);
+
+  while (date.getDay() !== 1) {
+    date.setDate(date.getDate() + 1);
+  }
+
+  return date;
 }

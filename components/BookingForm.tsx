@@ -5,7 +5,8 @@ import { DayPicker } from 'react-day-picker';
 import { es } from 'date-fns/locale';
 import 'react-day-picker/style.css';
 
-import { professional, eventTypes, type EventType } from '@/data/booking';
+import { professional, eventTypes } from '@/data/booking';
+import { EventType } from '@/types/booking';
 import { isDayDisabled, getSlotsForDay, createBooking } from '@/lib/booking';
 
 import Dialog from './Dialog';

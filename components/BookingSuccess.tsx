@@ -1,4 +1,4 @@
-import type { EventType } from '@/data/booking';
+import { EventType } from '@/types/booking';
 
 type Props = {
   eventType: EventType;

@@ -8,7 +8,9 @@ const createJestConfig = nextJest({
 // Configuración personalizada para Jest
 const config = {
   // Simula un entorno de navegador por si luego quieres testear componentes de React
-  testEnvironment: 'jest-environment-jsdom',
+  // testEnvironment: 'jest-environment-jsdom',
+  preset: 'ts-jest',
+  testEnvironment: 'node',
 };
 
 // Exportar la configuración para que Jest la use
