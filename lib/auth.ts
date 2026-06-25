@@ -5,14 +5,14 @@ const users: User[] = [
     email: 'bruno@test.com',
     password: '123456',
     name: 'Bruno',
-    isConfirmed: true // Usuario normal, puede entrar
+    isConfirmed: true, // Usuario normal, puede entrar
   },
   {
     email: 'noconfirmado@test.com',
     password: '123456',
     name: 'Invitado',
-    isConfirmed: false // Usuario que el test va a intentar loguear
-  }
+    isConfirmed: false, // Usuario que el test va a intentar loguear
+  },
 ];
 
 export function login(email: string, password: string) {

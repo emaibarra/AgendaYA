@@ -34,11 +34,12 @@ describe('Tests de Autenticación (lib/auth.ts)', () => {
 
   // Test: Bloqueo de inicio de sesión por cuenta no confirmada (US-M01-03)
   test('Lanza error en el login si la cuenta no ha sido confirmada', () => {
-    // Para que este test funcione, deberás agregar un usuario mock en lib/auth.ts 
+    // Para que este test funcione, deberás agregar un usuario mock en lib/auth.ts
     // que tenga una propiedad confirmada en false (ej: isConfirmed: false)
     // Asumimos que existe un usuario 'noconfirmado@test.com' en tu mock de usuarios
 
-    expect(() => login('noconfirmado@test.com', '123456')).toThrow('Debes confirmar tu cuenta antes de ingresar');
+    expect(() => login('noconfirmado@test.com', '123456')).toThrow(
+      'Debes confirmar tu cuenta antes de ingresar'
+    );
   });
-
 });

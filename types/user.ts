@@ -9,4 +9,5 @@ export interface User {
   name: string;
   email: string;
   password: string;
+  isConfirmed: boolean;
 }
