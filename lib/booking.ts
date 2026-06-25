@@ -90,9 +90,20 @@ export function createBooking(input: {
   phone?: string;
   note?: string;
 }): Booking {
+  // 1. Validar campos obligatorios (NUEVO)
+  if (!input.name.trim() || !input.email.trim()) {
+    throw new Error('El nombre y el email son obligatorios');
+  }
+
+  // 2. Validar formato de email (NUEVO)
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(input.email.trim())) {
+    throw new Error('Formato de email inválido');
+  }
+
   const dateKey = toDateKey(input.date);
 
-  // Regla del sistema: un horario reservado no puede reservarse otra vez.
+  // Regla del sistema: un horario reservado no puede reservarse otra vez. (Ya lo tenías)
   if (takenSlots.has(slotKey(dateKey, input.time))) {
     throw new Error('Este horario ya fue reservado. Por favor elegí otro.');
   }
