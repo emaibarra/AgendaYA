@@ -1,12 +1,5 @@
-import { RegisterDto, User } from '@/types/user';
-
-const users: User[] = [
-  {
-    email: 'bruno@test.com',
-    password: '123456',
-    name: 'Bruno',
-  },
-];
+import { ConfirmAccountDto, RegisterDto, User } from '@/types/user';
+import { users } from '@/data/users';
 
 export function login(email: string, password: string) {
   const user = users.find((u) => u.email === email);
@@ -38,6 +31,7 @@ export function register(data: RegisterDto) {
   }
 
   const newUser: User = {
+    id: users.length + 1,
     name,
     email,
     password,
@@ -45,4 +39,33 @@ export function register(data: RegisterDto) {
 
   users.push(newUser);
   return users[users.length - 1];
+}
+
+export function confirmAccount(data: ConfirmAccountDto) {
+  if (data.expired) {
+    throw new Error('El enlace de confirmación ha expirado');
+  }
+
+  return {
+    activated: true,
+    redirectTo: '/login',
+  };
+}
+
+export function recoverPassword(email: string) {
+  if (!email) {
+    throw new Error('El correo electrónico es obligatorio');
+  }
+
+  const user = users.find((u) => u.email === email);
+
+  if (!user) {
+    throw new Error('No existe una cuenta asociada a ese correo electrónico');
+  }
+
+  // Simulación del envío del correo de recuperación
+  return {
+    success: true,
+    message: 'Se envió un enlace para recuperar la contraseña',
+  };
 }

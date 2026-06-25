@@ -6,7 +6,13 @@ export interface RegisterDto {
 }
 
 export interface User {
+  id: number;
   name: string;
   email: string;
   password: string;
+}
+
+export interface ConfirmAccountDto {
+  token: string;
+  expired: boolean;
 }

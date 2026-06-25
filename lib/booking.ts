@@ -1,22 +1,6 @@
 import { availability, existingBookings, eventTypes } from '@/data/booking';
 import { addReservation } from '@/data/reservations';
-
-export type Booking = {
-  id: string;
-  eventTypeId: string;
-  date: string; // yyyy-mm-dd
-  time: string; // HH:mm
-  name: string;
-  email: string;
-  phone?: string;
-  note?: string;
-  createdAt: string;
-};
-
-export type Slot = {
-  time: string;
-  available: boolean;
-};
+import { Booking, Slot } from '@/types/booking';
 
 // Clave local yyyy-mm-dd (sin desfase de zona horaria, a diferencia de toISOString).
 export function toDateKey(date: Date): string {
@@ -136,4 +120,27 @@ export function createBooking(input: {
 
 export function getSessionBookings(): Booking[] {
   return [...sessionBookings];
+}
+
+// Funcion para poder testear dias no habilitados.
+export function nextSunday() {
+  const date = new Date();
+  date.setHours(0, 0, 0, 0);
+
+  while (date.getDay() !== 0) {
+    date.setDate(date.getDate() + 1);
+  }
+
+  return date;
+}
+// Funcion para poder testear el primer lunes.
+export function nextMonday() {
+  const date = new Date();
+  date.setHours(0, 0, 0, 0);
+
+  while (date.getDay() !== 1) {
+    date.setDate(date.getDate() + 1);
+  }
+
+  return date;
 }
