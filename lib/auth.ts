@@ -1,21 +1,8 @@
-import { RegisterDto, User } from '@/types/user';
-
-const users: User[] = [
-  {
-    email: 'bruno@test.com',
-    password: '123456',
-    name: 'Bruno',
-    isConfirmed: true, // Usuario normal, puede entrar
-  },
-  {
-    email: 'noconfirmado@test.com',
-    password: '123456',
-    name: 'Invitado',
-    isConfirmed: false, // Usuario que el test va a intentar loguear
-  },
-];
+import { RegisterDto, ConfirmAccountDto } from '@/types/user';
+import { users } from '@/data/users';
 
 export function login(email: string, password: string) {
+  console.log('usuarios', users);
   const user = users.find((u) => u.email === email);
 
   if (!user) {
@@ -56,7 +43,15 @@ export function register(data: RegisterDto) {
   }
 
   // un usuario recién registrado entra sin confirmar
-  users.push({ email, password, name, isConfirmed: false });
+  const newUser = {
+    id: users.length + 1,
+    email,
+    password,
+    name,
+    isConfirmed: false,
+  };
+
+  users.push(newUser);
 
   return users[users.length - 1];
 }

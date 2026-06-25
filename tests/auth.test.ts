@@ -7,12 +7,22 @@ describe('Tests de Autenticación (lib/auth.ts)', () => {
     users.length = 0;
 
     // Agrega el usuario inicial
-    users.push({
-      id: users.length + 1,
-      email: 'bruno@test.com',
-      password: '123456',
-      name: 'Bruno',
-    });
+    users.push(
+      {
+        id: 1,
+        email: 'bruno@test.com',
+        password: '123456',
+        name: 'Bruno',
+        isConfirmed: true,
+      },
+      {
+        id: 2,
+        email: 'noconfirmado@test.com',
+        password: '123456',
+        name: 'Invitado',
+        isConfirmed: false, // Usuario que el test va a intentar loguear
+      }
+    );
   });
 
   // Test 1: Verificar el error cuando la contraseña es incorrecta
@@ -64,7 +74,7 @@ describe('Tests de Autenticación (lib/auth.ts)', () => {
   test('Lanza error si el email está vacío', () => {
     expect(() => recoverPassword('')).toThrow('El correo electrónico es obligatorio');
   });
-  
+
   // Test: Rechazo por formato de email inválido al registrarse (US-M01-01)
   test('Lanza error en el registro si el formato del email es inválido', () => {
     const usuarioEmailInvalido = {
@@ -88,6 +98,4 @@ describe('Tests de Autenticación (lib/auth.ts)', () => {
       'Debes confirmar tu cuenta antes de ingresar'
     );
   });
-
 });
-

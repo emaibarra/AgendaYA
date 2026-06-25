@@ -3,20 +3,37 @@ import { User } from '@/types/user';
 export const users: User[] = [
   {
     id: 1,
-    email: 'caro@gmail.com',
+    email: 'bruno@test.com',
     password: '123456',
-    name: 'caro',
+    name: 'Bruno',
+    isConfirmed: true, // Usuario normal, puede entrar
   },
   {
     id: 2,
-    email: 'valen@gmail.com',
+    email: 'noconfirmado@test.com',
     password: '123456',
-    name: 'valen',
+    name: 'Invitado',
+    isConfirmed: false, // Usuario que el test va a intentar loguear
   },
   {
     id: 3,
+    email: 'caro@gmail.com',
+    password: '123456',
+    name: 'caro',
+    isConfirmed: true,
+  },
+  {
+    id: 4,
+    email: 'valen@gmail.com',
+    password: '123456',
+    name: 'valen',
+    isConfirmed: true,
+  },
+  {
+    id: 5,
     email: 'fer@gmail.com',
     password: '123456',
     name: 'fer',
+    isConfirmed: true,
   },
 ];
