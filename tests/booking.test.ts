@@ -1,4 +1,4 @@
-import { toDateKey, createBooking } from '@/lib/booking'; // Importamos createBooking
+import { toDateKey, isDayDisabled, nextSunday, nextMonday, createBooking } from '@/lib/booking';
 
 describe('Tests de Utilidades de Reserva (lib/booking.ts)', () => {
   // Test 3: Verificar que el formateo de la fecha sea correcto (el que ya tenías)
@@ -32,5 +32,14 @@ describe('Tests de Utilidades de Reserva (lib/booking.ts)', () => {
     };
 
     expect(() => createBooking(reservaEmailInvalido)).toThrow('Formato de email inválido');
+  });
+
+  // Test 4: Verifica que los dias no laborales no esten disponibles.
+  test('Bloquea los días no laborables', () => {
+    expect(isDayDisabled(nextSunday())).toBe(true);
+  });
+
+  test('Permite seleccionar un día laborable', () => {
+    expect(isDayDisabled(nextMonday())).toBe(false);
   });
 });

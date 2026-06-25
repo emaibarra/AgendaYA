@@ -1,15 +1,7 @@
+import { EventType } from '@/types/booking';
+import { addDays, formatDate } from '@/utils/booking.utils';
 // Datos mockeados para el módulo M04 - Proceso de Reserva (Booking público).
 // No hay backend ni envío real de mails: todo se resuelve en memoria.
-
-export type Modality = 'presencial' | 'virtual' | 'ambas';
-
-export type EventType = {
-  id: string;
-  name: string;
-  duration: number; // minutos
-  description: string;
-  modality: Modality;
-};
 
 // Perfil del profesional / empresa que comparte su enlace público.
 export const professional = {
@@ -44,12 +36,16 @@ export const availability = {
   endHour: 17, // hora de fin (exclusiva)
   slotMinutes: 30, // duración del intervalo entre turnos
   minNoticeHours: 2, // antelación mínima para reservar
-  blockedDates: ['2026-06-25'], // feriados / días bloqueados (yyyy-mm-dd)
+  blockedDates: [formatDate(addDays(2))], // feriados / días bloqueados (yyyy-mm-dd)
 };
 
-// Reservas ya existentes (mock) para demostrar que un horario tomado
-// no puede volver a reservarse.
 export const existingBookings = [
-  { date: '2026-06-24', time: '10:00' },
-  { date: '2026-06-23', time: '10:30' },
+  {
+    date: formatDate(addDays(1)),
+    time: '10:00',
+  },
+  {
+    date: formatDate(addDays(2)),
+    time: '10:30',
+  },
 ];
