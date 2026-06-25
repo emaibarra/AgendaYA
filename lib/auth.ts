@@ -3,7 +3,7 @@ type User = {
   password: string;
   name: string;
   failedAttempts?: number;
-  lockedUntil?: number; 
+  lockedUntil?: number;
 };
 
 const users: User[] = [
@@ -15,7 +15,7 @@ const users: User[] = [
 ];
 
 const MAX_INTENTOS_FALLIDOS = 5;
-const DURACION_BLOQUEO_MS = 15 * 60 * 1000; 
+const DURACION_BLOQUEO_MS = 15 * 60 * 1000;
 
 export function login(email: string, password: string) {
   const user = users.find((u) => u.email === email);
@@ -26,7 +26,7 @@ export function login(email: string, password: string) {
 
   // Si el bloqueo sigue, se rechaza el intento sin verificar la contraseña.
   if (user.lockedUntil && Date.now() < user.lockedUntil) {
-    throw new Error('Cuenta bloqueada por intentos fallidos. Intentá nuevamente dentro 15 minutos.');
+    throw new Error('Cuenta bloqueada por intentos fallidos. Intentá nuevamente en 15 minutos.');
   }
 
   // Si el bloqueo ya venció, se reinicia el contador antes de evaluar el intento actual.
@@ -40,7 +40,7 @@ export function login(email: string, password: string) {
 
     if (user.failedAttempts >= MAX_INTENTOS_FALLIDOS) {
       user.lockedUntil = Date.now() + DURACION_BLOQUEO_MS;
-      throw new Error('Cuenta bloqueada por intentos fallidos. Intentá nuevamente dentro 15 minutos.');
+      throw new Error('Cuenta bloqueada por intentos fallidos. Intentá nuevamente en 15 minutos.');
     }
 
     throw new Error('Contraseña incorrecta');
@@ -57,7 +57,6 @@ type RegisterInput = {
   name: string;
   confirmPassword: string;
 };
-
 
 export function register(data: RegisterInput) {
   const { email, password, name, confirmPassword } = data;
