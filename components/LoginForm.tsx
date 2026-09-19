@@ -1,9 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation'; //
 import { login, register } from '../lib/auth';
 
 export default function LoginForm() {
+const router = useRouter();
+
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,10 +25,12 @@ export default function LoginForm() {
       if (isLogin) {
         login(email, password);
         alert('¡Inicio de sesión exitoso!');
+        router.push('/dashboard');
       } else {
         register({ email, password, name, confirmPassword });
         resetForm();
         alert('¡Registro exitoso!');
+        setIsLogin(true);
       }
     } catch (err) {
       setError((err as Error).message);

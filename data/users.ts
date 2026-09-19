@@ -36,4 +36,11 @@ export const users: User[] = [
     name: 'fer',
     isConfirmed: true,
   },
+  {
+    id: 6,
+    email: 'ema@gmail.com',
+    password: '123',
+    name: 'ema',
+    isConfirmed: true,
+  },
 ];
