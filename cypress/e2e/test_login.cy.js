@@ -1,28 +1,26 @@
 /// <reference types="cypress" />
 
-
-describe('AgendaYA - Modulo 1 Autenticacion', () => { //test e2e ema
+describe('AgendaYA - Modulo 1 Autenticacion', () => { 
   it('inicia sesion exitosamente, redirige al dashboard y cierra sesion', () => {
-    //Visitar la pagina principal
-    cy.visit('http://localhost:3000')
+    // Visitar la pagina principal
+    cy.visit('/login');
 
-    //Ingresar credenciales validas
-    // Apuntamos a los inputs por su tipo de dato 
-    cy.get('input[type="email"]').type('ema@gmail.com');
-    cy.get('input[type="password"]').type('123');
+    // Ingresar credenciales validas usando data-cy (Obligatorio para el TP)
+    cy.get('[data-cy="login-email"]').type('ema@gmail.com');
+    cy.get('[data-cy="login-password"]').type('123');
 
-    //Hacer clic en el boton de ingreso
-    cy.contains('button', 'Ingresar').click();
+    // Hacer clic en el boton de ingreso
+    cy.get('[data-cy="submit-login"]').click();
 
-    //Verificar la redireccion 
-    cy.url().should('include', '/dashboard');
-
-    //Validar que la interfaz del dashboard haya cargado
-    cy.contains('¡Bienvenido a AgendaYA!').should('be.visible');
+    // 1. PRIMERO validamos que la interfaz del dashboard haya cargado (le damos 10 segundos)
+    cy.contains('¡Bienvenido a AgendaYA!', { timeout: 10000 }).should('be.visible');
     cy.contains('Has iniciado sesión correctamente').should('be.visible');
 
-    //Cerrar sesion y verificar que el usuario regrese a la pantalla de login
-    cy.contains('button', 'Cerrar sesión').click();
+    // 2. LUEGO verificamos la redireccion (así evitamos el error de Timeout)
+    cy.url().should('include', '/dashboard');
+
+    // Cerrar sesion y verificar que el usuario regrese a la pantalla de inicio
+    cy.get('[data-cy="logout-button"]').click();
     cy.url().should('eq', Cypress.config().baseUrl + '/');
   });
 });

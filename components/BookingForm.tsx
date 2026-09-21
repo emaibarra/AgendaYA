@@ -106,13 +106,13 @@ export default function BookingForm() {
     console.log('view cambió:', view);
   }, [view]);
   return (
-    <div className="flex min-h-dvh flex-col items-center px-4 py-8">
+        <div className="flex min-h-dvh flex-col items-center px-4 py-8">
       {/* Perfil del profesional */}
       <header className="flex flex-col items-center text-center">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-blue-100 text-4xl">
-          {professional.avatar}
-        </div>
-        <h1 className="mt-3 text-2xl font-bold">{professional.name}</h1>
+      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-blue-100 text-4xl">
+      {professional.avatar}
+      </div>
+      <h1 className="mt-3 text-2xl font-bold">{professional.name}</h1>
         <p className="text-sm text-gray-500">{professional.title}</p>
       </header>
 
@@ -159,6 +159,7 @@ export default function BookingForm() {
             <button
               key={item.id}
               type="button"
+              data-cy="service-option"
               onClick={() => {
                 setService(item);
                 setView(null);
@@ -223,9 +224,10 @@ export default function BookingForm() {
           </p>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4" data-cy="booking-form">
           <input
             placeholder="Nombre completo"
+            data-cy="name-input"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-full rounded-xl border border-gray-200 p-3"
@@ -233,6 +235,7 @@ export default function BookingForm() {
           <input
             type="email"
             placeholder="Email"
+            data-cy="email-input"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full rounded-xl border border-gray-200 p-3"
@@ -256,6 +259,7 @@ export default function BookingForm() {
 
           <button
             type="button"
+            data-cy="submit-booking"
             onClick={handleConfirm}
             className="w-full rounded-xl bg-green-600 py-3 font-semibold text-white hover:bg-green-700"
           >
@@ -264,16 +268,19 @@ export default function BookingForm() {
         </div>
       </Dialog>
 
-      {/* Diálogo: confirmación */}
+     {/* Diálogo: confirmación */}
       <Dialog open={view === 'success'} title="Reserva confirmada" onClose={resetAll}>
         {service && selectedDay && (
-          <BookingSuccess
-            eventType={service}
-            date={selectedDay}
-            time={selectedSlot}
-            email={email}
-            onReset={resetAll}
-          />
+          // Envolvemos tu componente en un div para que Cypress lo encuentre fácilmente
+          <div data-cy="booking-confirmation"> 
+            <BookingSuccess
+              eventType={service}
+              date={selectedDay}
+              time={selectedSlot}
+              email={email}
+              onReset={resetAll}
+            />
+          </div>
         )}
       </Dialog>
     </div>

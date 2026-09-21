@@ -98,6 +98,7 @@ const router = useRouter();
 
             <input
               type="email"
+              data-cy="login-email"
               placeholder="correo@ejemplo.com"
               className="w-full text-gray-600 rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
               value={email}
@@ -110,6 +111,7 @@ const router = useRouter();
 
             <input
               type="password"
+              data-cy="login-password"
               placeholder="********"
               className="w-full text-gray-600 rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
               value={password}
@@ -125,6 +127,7 @@ const router = useRouter();
 
               <input
                 type="password"
+                data-cy="register-confirm-password"
                 placeholder="********"
                 className="w-full text-gray-600 rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
                 value={confirmPassword}
@@ -135,6 +138,7 @@ const router = useRouter();
 
           <button
             type="submit"
+            data-cy="submit-login"
             className="w-full rounded-xl bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700"
             disabled={loading}
           >

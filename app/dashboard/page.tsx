@@ -35,7 +35,7 @@ export default function DashboardPage() {
           </button>
 
           <button
-            onClick={handleLogout}
+           data-cy="logout-button" onClick={handleLogout}
             className="w-full rounded-xl border border-red-200 bg-red-50 py-3 font-semibold text-red-600 transition hover:bg-red-100"
           >
             Cerrar sesión
