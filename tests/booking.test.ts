@@ -1,4 +1,5 @@
 import { toDateKey, isDayDisabled, nextSunday, nextMonday, createBooking } from '@/lib/booking';
+import { describe, it, expect, jest, beforeEach } from '@jest/globals';
 
 describe('Tests de Utilidades de Reserva (lib/booking.ts)', () => {
   // Convierte una fecha al formato interno yyyy-mm-dd sin perder ceros a la izquierda.

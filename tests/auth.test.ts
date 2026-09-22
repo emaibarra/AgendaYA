@@ -1,5 +1,6 @@
 import { login, register, confirmAccount, recoverPassword } from '@/lib/auth';
 import { users } from '@/data/users';
+import { describe, it, expect, jest, beforeEach } from '@jest/globals';
 
 describe('Tests de Autenticación (lib/auth.ts)', () => {
   beforeEach(() => {
