@@ -168,3 +168,58 @@ export function nextMonday() {
 
   return date;
 }
+/**
+ * Valida si una fecha es elegible para realizar una reserva.
+ * - Rechaza fechas pasadas con un error.
+ * - Retorna false si es el mismo día de hoy (requiere antelación).
+ * - Retorna true si es en el futuro.
+ */
+export function validarFechaReserva(fecha: string): boolean {
+  const fechaRecibida = new Date(fecha);
+  const ahora = new Date();
+
+  // Comparamos las fechas convirtiéndolas a formato YYYY-MM-DD para evitar problemas con la hora
+  const diaRecibido = fechaRecibida.toISOString().split('T')[0];
+  const diaDeHoy = ahora.toISOString().split('T')[0];
+
+  if (diaRecibido < diaDeHoy) {
+    throw new Error('No se pueden realizar reservas en fechas pasadas');
+  }
+
+  if (diaRecibido === diaDeHoy) {
+    return false; // Caso borde: no se puede reservar para hoy mismo
+  }
+
+  return true; // Caso normal: la fecha es en el futuro
+}
+
+/**
+ * Calcula los turnos (slots) disponibles entre dos horarios dados.
+ * Retorna un array vacío si el horario de inicio es igual o mayor al de fin.
+ */
+export function calcularSlots(inicio: string, fin: string, duracionMinutos: number): string[] {
+  const slots: string[] = [];
+  
+  // Convertimos "09:00" a minutos totales (ej: 9 * 60 = 540)
+  const [horaInicio, minInicio] = inicio.split(':').map(Number);
+  const [horaFin, minFin] = fin.split(':').map(Number);
+  
+  let minutosActuales = horaInicio * 60 + minInicio;
+  const minutosFin = horaFin * 60 + minFin;
+  
+  // Caso de error: horarios invertidos o iguales
+  if (minutosActuales >= minutosFin) {
+    return [];
+  }
+  
+  // Caso normal: iteramos sumando la duración hasta llegar al fin
+  while (minutosActuales + duracionMinutos <= minutosFin) {
+    const horas = Math.floor(minutosActuales / 60).toString().padStart(2, '0');
+    const minutos = (minutosActuales % 60).toString().padStart(2, '0');
+    
+    slots.push(`${horas}:${minutos}`);
+    minutosActuales += duracionMinutos;
+  }
+  
+  return slots;
+}
