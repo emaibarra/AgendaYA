@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe('AgendaYA - Modulo 1 Autenticacion', () => { 
+describe('AgendaYA - Modulo 1 Autenticacion', () => {
   it('inicia sesion exitosamente, redirige al dashboard y cierra sesion', () => {
     // Visitar la pagina principal
     cy.visit('/login');
