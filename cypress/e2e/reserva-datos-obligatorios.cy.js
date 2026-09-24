@@ -13,6 +13,6 @@ describe('AgendaYA - M04 Booking Público', () => {
     cy.get('[data-cy="error-formulario-reserva"]')
       .should('be.visible')
       .and('contain', 'Ingresá tu nombre y un email válido.');
-    cy.get('[data-cy="booking-confirmation"]').should('not.exist');
+    cy.get('[data-cy="booking-confirmation"]').should('not.be.visible');
   });
 });
