@@ -199,27 +199,29 @@ export function validarFechaReserva(fecha: string): boolean {
  */
 export function calcularSlots(inicio: string, fin: string, duracionMinutos: number): string[] {
   const slots: string[] = [];
-  
+
   // Convertimos "09:00" a minutos totales (ej: 9 * 60 = 540)
   const [horaInicio, minInicio] = inicio.split(':').map(Number);
   const [horaFin, minFin] = fin.split(':').map(Number);
-  
+
   let minutosActuales = horaInicio * 60 + minInicio;
   const minutosFin = horaFin * 60 + minFin;
-  
+
   // Caso de error: horarios invertidos o iguales
   if (minutosActuales >= minutosFin) {
     return [];
   }
-  
+
   // Caso normal: iteramos sumando la duración hasta llegar al fin
   while (minutosActuales + duracionMinutos <= minutosFin) {
-    const horas = Math.floor(minutosActuales / 60).toString().padStart(2, '0');
+    const horas = Math.floor(minutosActuales / 60)
+      .toString()
+      .padStart(2, '0');
     const minutos = (minutosActuales % 60).toString().padStart(2, '0');
-    
+
     slots.push(`${horas}:${minutos}`);
     minutosActuales += duracionMinutos;
   }
-  
+
   return slots;
 }

@@ -1,4 +1,4 @@
-import { defineConfig } from "cypress";
+import { defineConfig } from 'cypress';
 
 export default defineConfig({
   e2e: {
@@ -6,14 +6,14 @@ export default defineConfig({
       // implement node event listeners here
     },
     // Busca cualquier archivo .cy.js en cualquier subcarpeta dentro de cypress
-    specPattern: "cypress/**/*.cy.{js,jsx,ts,tsx}",
-    baseUrl: "http://localhost:3000",
+    specPattern: 'cypress/**/*.cy.{js,jsx,ts,tsx}',
+    baseUrl: 'http://localhost:3000',
   },
 
   component: {
     devServer: {
-      framework: "next",
-      bundler: "webpack",
+      framework: 'next',
+      bundler: 'webpack',
     },
   },
 });

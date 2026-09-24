@@ -10,7 +10,7 @@ export default function TimeSlotButton({ time, available, onSelect }: Props) {
   return (
     <button
       data-cy="time-slot"
-    type="button"
+      type="button"
       disabled={!available}
       onClick={() => onSelect(time)}
       className="rounded-xl border border-gray-200 p-4 text-center text-base font-medium transition enabled:hover:border-blue-500 enabled:hover:bg-blue-50 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-300 disabled:line-through"

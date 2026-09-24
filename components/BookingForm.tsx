@@ -106,13 +106,13 @@ export default function BookingForm() {
     console.log('view cambió:', view);
   }, [view]);
   return (
-        <div className="flex min-h-dvh flex-col items-center px-4 py-8">
+    <div className="flex min-h-dvh flex-col items-center px-4 py-8">
       {/* Perfil del profesional */}
       <header className="flex flex-col items-center text-center">
-      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-blue-100 text-4xl">
-      {professional.avatar}
-      </div>
-      <h1 className="mt-3 text-2xl font-bold">{professional.name}</h1>
+        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-blue-100 text-4xl">
+          {professional.avatar}
+        </div>
+        <h1 className="mt-3 text-2xl font-bold">{professional.name}</h1>
         <p className="text-sm text-gray-500">{professional.title}</p>
       </header>
 
@@ -268,11 +268,11 @@ export default function BookingForm() {
         </div>
       </Dialog>
 
-     {/* Diálogo: confirmación */}
+      {/* Diálogo: confirmación */}
       <Dialog open={view === 'success'} title="Reserva confirmada" onClose={resetAll}>
         {service && selectedDay && (
           // Envolvemos tu componente en un div para que Cypress lo encuentre fácilmente
-          <div data-cy="booking-confirmation"> 
+          <div data-cy="booking-confirmation">
             <BookingSuccess
               eventType={service}
               date={selectedDay}
