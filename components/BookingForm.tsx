@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { DayPicker } from 'react-day-picker';
+import { DayButton, DayPicker, type DayButtonProps } from 'react-day-picker';
 import { es } from 'date-fns/locale';
 import 'react-day-picker/style.css';
 
@@ -25,6 +25,10 @@ const calendarStyle = {
   '--rdp-accent-color': '#2563eb',
   '--rdp-accent-background-color': '#eff6ff',
 } as React.CSSProperties;
+
+function BotonDiaCalendario(props: DayButtonProps) {
+  return <DayButton {...props} data-cy="dia-calendario" />;
+}
 
 export default function BookingForm() {
   // Al entrar, primero hay que elegir el tipo de evento.
@@ -149,6 +153,7 @@ export default function BookingForm() {
           disabled={!service ? true : isDayDisabled}
           startMonth={new Date()}
           style={calendarStyle}
+          components={{ DayButton: BotonDiaCalendario }}
         />
       </section>
 
@@ -243,19 +248,25 @@ export default function BookingForm() {
           <input
             type="tel"
             placeholder="Teléfono (opcional)"
+            data-cy="telefono-input"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             className="w-full rounded-xl border border-gray-200 p-3"
           />
           <textarea
             placeholder="Nota para el profesional (opcional)"
+            data-cy="nota-input"
             value={note}
             onChange={(e) => setNote(e.target.value)}
             rows={2}
             className="w-full rounded-xl border border-gray-200 p-3"
           />
 
-          {formError && <p className="text-sm text-red-600">{formError}</p>}
+          {formError && (
+            <p data-cy="error-formulario-reserva" className="text-sm text-red-600">
+              {formError}
+            </p>
+          )}
 
           <button
             type="button"
