@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'; //
 import { login, register } from '../lib/auth';
 
 export default function LoginForm() {
-  const router = useRouter();
+const router = useRouter();
 
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
@@ -68,8 +68,8 @@ export default function LoginForm() {
           </button>
 
           <button
-            data-cy="register-tab"
             onClick={() => setIsLogin(false)}
+            data-cy="tab-register"
             className={`flex-1 rounded-lg py-2 font-medium transition ${
               !isLogin ? 'bg-white shadow text-slate-900' : 'text-slate-500'
             }`}
@@ -85,7 +85,6 @@ export default function LoginForm() {
               <label className="mb-1 text-gray-800 block text-sm font-medium">Nombre</label>
 
               <input
-                data-cy="register-name"
                 type="text"
                 placeholder="Juan Pérez"
                 className="w-full text-gray-600 rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
@@ -147,7 +146,7 @@ export default function LoginForm() {
             {loading ? 'Procesando...' : isLogin ? 'Ingresar' : 'Crear cuenta'}
           </button>
           {error && (
-            <div data-cy="login-error" className="text-center text-sm text-red-500">
+            <div data-cy="auth-error-message" className="text-center text-sm text-red-500">
               {error}
             </div>
           )}
