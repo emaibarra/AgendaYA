@@ -3,7 +3,7 @@ describe('AgendaYA - Modulo 1 Autenticacion', () => {
     // Arrange: Visitar la pagina de login
     cy.visit('/login');
 
-    // Ingresar credenciales validas usando data-cy (Obligatorio para el TP)
+    // Ingresar credenciales validas usando data-cy 
     cy.get('[data-cy="login-email"]').type('ema@gmail.com');
     cy.get('[data-cy="login-password"]').type('123');
 
@@ -16,8 +16,6 @@ describe('AgendaYA - Modulo 1 Autenticacion', () => {
        // Verificamos la redireccion de forma segura porque la UI ya cargó
     cy.url().should('include', '/dashboard');
     cy.contains('Bienvenido a AgendaYA!').should('be.visible');
-
- 
 
     // Cerrar sesion y verificar que el usuario regrese a la pantalla de inicio
     cy.get('[data-cy="logout-button"]').click();
