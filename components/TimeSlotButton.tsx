@@ -9,6 +9,7 @@ type Props = {
 export default function TimeSlotButton({ time, available, onSelect }: Props) {
   return (
     <button
+      data-cy="time-slot"
       type="button"
       disabled={!available}
       onClick={() => onSelect(time)}

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { DayPicker } from 'react-day-picker';
+import { DayButton, DayPicker, type DayButtonProps } from 'react-day-picker';
 import { es } from 'date-fns/locale';
 import 'react-day-picker/style.css';
 
@@ -25,6 +25,10 @@ const calendarStyle = {
   '--rdp-accent-color': '#2563eb',
   '--rdp-accent-background-color': '#eff6ff',
 } as React.CSSProperties;
+
+function BotonDiaCalendario(props: DayButtonProps) {
+  return <DayButton {...props} data-cy="dia-calendario" />;
+}
 
 export default function BookingForm() {
   // Al entrar, primero hay que elegir el tipo de evento.
@@ -149,6 +153,7 @@ export default function BookingForm() {
           disabled={!service ? true : isDayDisabled}
           startMonth={new Date()}
           style={calendarStyle}
+          components={{ DayButton: BotonDiaCalendario }}
         />
       </section>
 
@@ -159,6 +164,7 @@ export default function BookingForm() {
             <button
               key={item.id}
               type="button"
+              data-cy="service-option"
               onClick={() => {
                 setService(item);
                 setView(null);
@@ -223,9 +229,10 @@ export default function BookingForm() {
           </p>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4" data-cy="booking-form">
           <input
             placeholder="Nombre completo"
+            data-cy="name-input"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-full rounded-xl border border-gray-200 p-3"
@@ -233,6 +240,7 @@ export default function BookingForm() {
           <input
             type="email"
             placeholder="Email"
+            data-cy="email-input"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full rounded-xl border border-gray-200 p-3"
@@ -240,22 +248,29 @@ export default function BookingForm() {
           <input
             type="tel"
             placeholder="Teléfono (opcional)"
+            data-cy="telefono-input"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             className="w-full rounded-xl border border-gray-200 p-3"
           />
           <textarea
             placeholder="Nota para el profesional (opcional)"
+            data-cy="nota-input"
             value={note}
             onChange={(e) => setNote(e.target.value)}
             rows={2}
             className="w-full rounded-xl border border-gray-200 p-3"
           />
 
-          {formError && <p className="text-sm text-red-600">{formError}</p>}
+          {formError && (
+            <p data-cy="error-formulario-reserva" className="text-sm text-red-600">
+              {formError}
+            </p>
+          )}
 
           <button
             type="button"
+            data-cy="submit-booking"
             onClick={handleConfirm}
             className="w-full rounded-xl bg-green-600 py-3 font-semibold text-white hover:bg-green-700"
           >
@@ -267,13 +282,16 @@ export default function BookingForm() {
       {/* Diálogo: confirmación */}
       <Dialog open={view === 'success'} title="Reserva confirmada" onClose={resetAll}>
         {service && selectedDay && (
-          <BookingSuccess
-            eventType={service}
-            date={selectedDay}
-            time={selectedSlot}
-            email={email}
-            onReset={resetAll}
-          />
+          // Envolvemos tu componente en un div para que Cypress lo encuentre fácilmente
+          <div data-cy="booking-confirmation">
+            <BookingSuccess
+              eventType={service}
+              date={selectedDay}
+              time={selectedSlot}
+              email={email}
+              onReset={resetAll}
+            />
+          </div>
         )}
       </Dialog>
     </div>

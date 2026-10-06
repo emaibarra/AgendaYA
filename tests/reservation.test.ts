@@ -1,4 +1,5 @@
 import { confirmReservation } from '@/lib/reservation';
+import { expect } from '@jest/globals';
 
 // Cuando el id no existe, el flujo debe fallar con un error explícito.
 test('Id que no sea reconocido por la reserva', () => {

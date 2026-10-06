@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'; //
 import { login, register } from '../lib/auth';
 
 export default function LoginForm() {
-const router = useRouter();
+  const router = useRouter();
 
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
@@ -68,6 +68,7 @@ const router = useRouter();
           </button>
 
           <button
+            data-cy="register-tab"
             onClick={() => setIsLogin(false)}
             className={`flex-1 rounded-lg py-2 font-medium transition ${
               !isLogin ? 'bg-white shadow text-slate-900' : 'text-slate-500'
@@ -84,6 +85,7 @@ const router = useRouter();
               <label className="mb-1 text-gray-800 block text-sm font-medium">Nombre</label>
 
               <input
+                data-cy="register-name"
                 type="text"
                 placeholder="Juan Pérez"
                 className="w-full text-gray-600 rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
@@ -98,6 +100,7 @@ const router = useRouter();
 
             <input
               type="email"
+              data-cy="login-email"
               placeholder="correo@ejemplo.com"
               className="w-full text-gray-600 rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
               value={email}
@@ -110,6 +113,7 @@ const router = useRouter();
 
             <input
               type="password"
+              data-cy="login-password"
               placeholder="********"
               className="w-full text-gray-600 rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
               value={password}
@@ -125,6 +129,7 @@ const router = useRouter();
 
               <input
                 type="password"
+                data-cy="register-confirm-password"
                 placeholder="********"
                 className="w-full text-gray-600 rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
                 value={confirmPassword}
@@ -135,12 +140,17 @@ const router = useRouter();
 
           <button
             type="submit"
+            data-cy="submit-login"
             className="w-full rounded-xl bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700"
             disabled={loading}
           >
             {loading ? 'Procesando...' : isLogin ? 'Ingresar' : 'Crear cuenta'}
           </button>
-          {error && <div className="text-center text-sm text-red-500">{error}</div>}
+          {error && (
+            <div data-cy="login-error" className="text-center text-sm text-red-500">
+              {error}
+            </div>
+          )}
         </form>
 
         <div className="mt-6 text-center text-sm text-slate-500">
