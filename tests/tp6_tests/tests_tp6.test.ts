@@ -1,5 +1,5 @@
 import { register, confirmAccount } from '@/lib/auth';
-import { describe, it, expect, jest, beforeEach } from '@jest/globals';
+import { describe, it, expect } from '@jest/globals';
 
 describe('Unit tests de registro y confirmacion de cuenta', () => {
   it('Registrar usuario por primera vez', () => {
