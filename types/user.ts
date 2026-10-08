@@ -1,3 +1,4 @@
+export type AuthProvider = 'local' | 'google';
 export interface RegisterDto {
   name: string;
   email: string;
@@ -13,6 +14,7 @@ export interface User {
   isConfirmed: boolean;
   lockedUntil?: Date | null;
   failedAttempts?: number;
+  provider: AuthProvider;
 }
 
 export interface ConfirmAccountDto {

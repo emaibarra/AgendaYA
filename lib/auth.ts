@@ -1,4 +1,4 @@
-import { RegisterDto, ConfirmAccountDto } from '@/types/user';
+import { ConfirmAccountDto, RegisterDto, User } from '@/types/user';
 import { users } from '@/data/users';
 
 const MAX_INTENTOS_FALLIDOS = 5;
@@ -70,12 +70,13 @@ export function register(data: RegisterDto) {
   }
 
   // un usuario recién registrado entra sin confirmar
-  const newUser = {
+  const newUser: User = {
     id: users.length + 1,
     email,
     password,
     name,
     isConfirmed: false,
+    provider: 'local',
   };
 
   users.push(newUser);
@@ -110,4 +111,22 @@ export function recoverPassword(email: string) {
     success: true,
     message: 'Se envió un enlace para recuperar la contraseña',
   };
+}
+
+export function loginWithGoogle(email: string, password: string) {
+  const user = users.find((u) => u.email === email);
+
+  if (!user) {
+    throw new Error('No existe una cuenta asociada a Google');
+  }
+  if (!user.isConfirmed) {
+    throw new Error('Debes confirmar tu cuenta antes de ingresar');
+  }
+  if (user.password !== password) {
+    throw new Error('Contraseña incorrecta');
+  }
+  if (user.provider !== 'google') {
+    throw new Error('El usuario no está registrado con Google');
+  }
+  return user;
 }
