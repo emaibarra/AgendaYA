@@ -4,10 +4,14 @@ on:
   push:
     branches:
       - main
+        -develop
+        -qa
 
   pull_request:
     branches:
       - main
+        -develop
+        -qa
 
 jobs:
   test-and-build:

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation'; //
-import { login, register } from '../lib/auth';
+import { login, register, loginWithGoogle } from '../lib/auth';
 
 export default function LoginForm() {
   const router = useRouter();
@@ -32,6 +32,21 @@ export default function LoginForm() {
         alert('¡Registro exitoso!');
         setIsLogin(true);
       }
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  async function handleGoogleLogin() {
+    setLoading(true);
+    setError('');
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      // Simular el inicio de sesión con Google
+      loginWithGoogle(email, password);
+      alert('¡Inicio de sesión con Google exitoso!');
+      router.push('/dashboard');
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -146,6 +161,17 @@ export default function LoginForm() {
           >
             {loading ? 'Procesando...' : isLogin ? 'Ingresar' : 'Crear cuenta'}
           </button>
+          {isLogin && (
+            <button
+              type="button"
+              className="w-full rounded-xl bg-red-600 py-3 font-semibold text-white transition hover:bg-red-700"
+              data-cy="google-login"
+              disabled={loading}
+              onClick={() => handleGoogleLogin()}
+            >
+              Continuar con Google
+            </button>
+          )}
           {error && (
             <div data-cy="login-error" className="text-center text-sm text-red-500">
               {error}
