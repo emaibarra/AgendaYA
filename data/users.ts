@@ -7,6 +7,7 @@ export const users: User[] = [
     password: '123456',
     name: 'Bruno',
     isConfirmed: true, // Usuario normal, puede entrar
+    provider: 'local',
   },
   {
     id: 2,
@@ -14,6 +15,7 @@ export const users: User[] = [
     password: '123456',
     name: 'Invitado',
     isConfirmed: false, // Usuario que el test va a intentar loguear
+    provider: 'local',
   },
   {
     id: 3,
@@ -21,6 +23,7 @@ export const users: User[] = [
     password: '123456',
     name: 'caro',
     isConfirmed: true,
+    provider: 'local',
   },
   {
     id: 4,
@@ -28,6 +31,7 @@ export const users: User[] = [
     password: '123456',
     name: 'valen',
     isConfirmed: true,
+    provider: 'google',
   },
   {
     id: 5,
@@ -35,6 +39,7 @@ export const users: User[] = [
     password: '123456',
     name: 'fer',
     isConfirmed: true,
+    provider: 'local',
   },
   {
     id: 6,
@@ -42,5 +47,6 @@ export const users: User[] = [
     password: '123',
     name: 'ema',
     isConfirmed: true,
+    provider: 'local',
   },
 ];
