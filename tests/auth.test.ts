@@ -1,4 +1,4 @@
-import { login, register, confirmAccount, recoverPassword } from '@/lib/auth';
+import { login, register, confirmAccount, recoverPassword, loginWithGoogle } from '@/lib/auth';
 import { users } from '@/data/users';
 import { describe, expect, jest, beforeEach } from '@jest/globals';
 
@@ -14,6 +14,7 @@ describe('Tests de Autenticación (lib/auth.ts)', () => {
         password: '123456',
         name: 'Bruno',
         isConfirmed: true,
+        provider: 'local',
       },
       {
         id: 2,
@@ -21,6 +22,7 @@ describe('Tests de Autenticación (lib/auth.ts)', () => {
         password: '123456',
         name: 'Invitado',
         isConfirmed: false,
+        provider: 'local',
       }
     );
   });
@@ -122,6 +124,7 @@ describe('Tests de Autenticación (lib/auth.ts)', () => {
         name: 'Usuario Bloqueo',
         isConfirmed: true,
         failedAttempts: 0,
+        provider: 'local',
       });
     });
 
@@ -164,4 +167,21 @@ describe('Tests de Autenticación (lib/auth.ts)', () => {
       expect(user.email).toBe(email);
     });
   });
+});
+
+// Test para login con Google
+test('Permite iniciar sesión mediante Google', () => {
+  users.push({
+    id: 7,
+    email: 'google@test.com',
+    password: '',
+    name: 'Google User',
+    isConfirmed: true,
+    provider: 'google',
+  });
+
+  const user = loginWithGoogle('google@test.com', '');
+
+  expect(user.email).toBe('google@test.com');
+  expect(user.provider).toBe('google');
 });
