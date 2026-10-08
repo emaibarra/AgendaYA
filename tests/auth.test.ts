@@ -185,3 +185,19 @@ test('Permite iniciar sesión mediante Google', () => {
   expect(user.email).toBe('google@test.com');
   expect(user.provider).toBe('google');
 });
+
+// Test para login tradicional con cuenta de Google
+test('Rechaza login tradicional para usuarios de Google', () => {
+  users.push({
+    id: 7,
+    email: 'google@test.com',
+    password: '123456',
+    name: 'Google User',
+    isConfirmed: true,
+    provider: 'google',
+  });
+
+  expect(() => login('google@test.com', '123456')).toThrow(
+    'Esta cuenta debe iniciar sesión con Google'
+  );
+});
