@@ -4,14 +4,14 @@ on:
   push:
     branches:
       - main
-        -develop
-        -qa
+      - develop
+      - qa
 
   pull_request:
     branches:
       - main
-        -develop
-        -qa
+      - develop
+      - qag
 
 jobs:
   test-and-build:
