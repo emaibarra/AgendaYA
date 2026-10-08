@@ -11,6 +11,10 @@ export function login(email: string, password: string) {
     throw new Error('Usuario no encontrado');
   }
 
+  if (user.provider === 'google') {
+    throw new Error('Esta cuenta debe iniciar sesión con Google');
+  }
+
   // Agregamos la validación antes de verificar la contraseña
   if (user.isConfirmed === false) {
     throw new Error('Debes confirmar tu cuenta antes de ingresar');
