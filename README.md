@@ -39,46 +39,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 graph TD
 %% DISPARADORES
 subgraph Disparadores
-A[🚀 Push a la rama 'main']
-B[🔀 Pull Request hacia 'main']
-end
-%% PIPELINE
-subgraph Etapas del Pipeline de CI
-    C[📥 1. Checkout del repositorio]
-    D[⚙️ 2. Setup Node.js]
-    E[📦 3. Instala dependencias <br> 'npm install']
-    I[⚡️ 4. Ejecuta el Eslint 'npn run lint']
-    F[🧪 5. Ejecuta Tests <br> 'npm test']
-    J[🎨 6. Ejecuta el formateador de texto 'npm run format']
-    K[🔒️ 7. Ejecuta el build del proyecto 'npm run build']
-end
-
-%% RESULTADOS
-subgraph Resultados Esperados
-    G[✅ Éxito <br> Se habilita el Merge a main]
-    H[❌ Fallo <br> Se bloquea la integración y se notifica]
-end
-
-%% CONEXIONES
-A --> C
-B --> C
-C --> D
-D --> E
-E --> I
-I --> F
-F --> J
-J --> K
-
-
-K -->|Si se ejecutan todos los comandos del pipeline de forma exitosa| G
-K -->|Si alguna instancia del pipeline falla| H
-
-%% Estilos (Opcional, para darle color)
-style G fill:#d4edda,stroke:#28a745,color:#155724
-style H fill:#f8d7da,stroke:#dc3545,color:#721c24
-graph TD
-%% DISPARADORES
-subgraph Disparadores
     A[🚀 Push a main, develop, qa]
     B[🔀 Pull Request hacia main, develop, qa]
 end
