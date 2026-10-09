@@ -76,4 +76,43 @@ K -->|Si alguna instancia del pipeline falla| H
 %% Estilos (Opcional, para darle color)
 style G fill:#d4edda,stroke:#28a745,color:#155724
 style H fill:#f8d7da,stroke:#dc3545,color:#721c24
+graph TD
+%% DISPARADORES
+subgraph Disparadores
+    A[🚀 Push a main, develop, qa]
+    B[🔀 Pull Request hacia main, develop, qa]
+end
+
+%% PIPELINE (Jobs secuenciales)
+subgraph Etapas del Pipeline de CI
+    C[🧹 1. Linter y Formato <br> 'npm run lint' y 'format:check']
+    D[🧪 2. Tests Unitarios <br> 'npm test']
+    E[🏗️ 3. Compilación <br> 'npm run build']
+    F[🤖 4. Tests E2E <br> 'npm run e2e:ci']
+end
+
+%% RESULTADOS
+subgraph Resultados Esperados
+    G[✅ Éxito <br> Se habilita el Merge]
+    H[❌ Fallo <br> Se bloquea la integración y se notifica]
+end
+
+%% CONEXIONES
+A --> C
+B --> C
+C --> D
+D --> E
+E --> F
+
+%% RUTAS DE RESULTADOS
+F -->|Si todas las etapas terminan con éxito| G
+
+C -.->|Si falla| H
+D -.->|Si falla| H
+E -.->|Si falla| H
+F -.->|Si falla| H
+
+%% Estilos
+style G fill:#d4edda,stroke:#28a745,color:#155724
+style H fill:#f8d7da,stroke:#dc3545,color:#721c24
 ```
