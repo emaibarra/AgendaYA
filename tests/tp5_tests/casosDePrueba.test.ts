@@ -40,12 +40,13 @@ describe('Casos de Prueba TP 5', () => {
     const emailTest = 'intentos@test.com';
     const passwordTest = 'ClaveSegura1';
     
-    register({
+    const nuevoUser = register({
       name: 'Usuario Intentos',
       email: emailTest,
       password: passwordTest,
       confirmPassword: passwordTest,
     });
+    nuevoUser.isConfirmed = true;
     
     // Forzamos manualmente o simulamos un fallo previo 
     expect(() => login(emailTest, 'claveEquivocada')).toThrow('Contraseña incorrecta');
@@ -80,7 +81,7 @@ describe('Casos de Prueba TP 5', () => {
 
   // CASOS NEGATIVOS
 
-  it('CP-NE001: Validar correo de administrador (Formato Inválido)', () => {
+  it('CP-NE001: Validar correo de administrador (Formato invalido)', () => {
     expect(() => {
       register({
         name: 'Carolina',
@@ -113,7 +114,7 @@ describe('Casos de Prueba TP 5', () => {
     }).toThrow('El correo ya está registrado');
   });
 
-  it('CP-NE004: Registro fallido por longitud de contraseña (Ej: "admin")', () => {
+  it('CP-NE004: Registro fallido por longitud de contraseña', () => {
     expect(() => {
       register({
         name: 'Admin',
