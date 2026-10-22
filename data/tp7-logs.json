@@ -1,0 +1,32 @@
+[
+  {
+    "timestamp": "2026-10-22T22:01:17.093Z",
+    "method": "GET",
+    "path": "/api/tp7/documents",
+    "statusCode": 200
+  },
+  {
+    "timestamp": "2026-10-22T22:07:47.094Z",
+    "method": "GET",
+    "path": "/api/tp7/documents/lista-empleado",
+    "statusCode": 404
+  },
+  {
+    "timestamp": "2026-10-22T22:08:05.760Z",
+    "method": "GET",
+    "path": "/api/tp7/documents",
+    "statusCode": 400
+  },
+  {
+    "timestamp": "2026-10-22T22:10:31.177Z",
+    "method": "GET",
+    "path": "/api/tp7/test",
+    "statusCode": 200
+  },
+  {
+    "timestamp": "2026-10-22T22:12:12.044Z",
+    "method": "GET",
+    "path": "/api/tp7/private",
+    "statusCode": 200
+  }
+]

@@ -1,0 +1,21 @@
+PROTOCOLO DE MANTENIMIENTO DE UNIDADES
+
+Empresa: Terminal de Transporte
+Código: MNT-001
+Versión: 1.0
+
+1. OBJETIVO
+Establecer un procedimiento básico para registrar y realizar el mantenimiento preventivo de las unidades de transporte.
+
+2. PROCEDIMIENTO
+- Verificar el estado general de la unidad.
+- Revisar neumáticos, luces y sistemas de seguridad.
+- Registrar las observaciones detectadas.
+- Informar las fallas al área de mantenimiento.
+- Registrar la intervención realizada y su fecha.
+
+3. RESPONSABILIDADES
+El personal de mantenimiento debe documentar las revisiones y comunicar las fallas detectadas al responsable del área.
+
+4. OBSERVACIÓN
+Este documento es un ejemplo académico elaborado para el TP7. No reemplaza los procedimientos técnicos oficiales de la empresa.
