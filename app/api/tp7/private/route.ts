@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { logRequest } from '@/lib/tp7-logger';
+import { authenticateBasic } from '@/lib/tp7-auth';
 
 export async function GET(request: NextRequest) {
-  const authorized = request.headers.get('x-demo-token') === 'tp7-demo-2026';
-
-  const statusCode = authorized ? 200 : 401;
+  const authResponse = authenticateBasic(request);
+  const statusCode = authResponse ? authResponse.status : 200;
 
   try {
     await logRequest({
@@ -19,11 +19,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Error interno del servidor.' }, { status: 500 });
   }
 
-  if (!authorized) {
-    return NextResponse.json(
-      { error: 'No autorizado. Se requiere un token válido.' },
-      { status: 401 }
-    );
+  if (authResponse) {
+    return authResponse;
   }
 
   return NextResponse.json({

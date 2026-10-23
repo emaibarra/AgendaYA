@@ -28,5 +28,17 @@
     "method": "GET",
     "path": "/api/tp7/private",
     "statusCode": 200
+  },
+  {
+    "timestamp": "2026-10-22T23:07:45.786Z",
+    "method": "GET",
+    "path": "/api/tp7/private",
+    "statusCode": 200
+  },
+  {
+    "timestamp": "2026-10-22T23:09:54.919Z",
+    "method": "GET",
+    "path": "/api/tp7/private",
+    "statusCode": 401
   }
 ]
